@@ -104,6 +104,14 @@ language-model assistance. They are not copied from a separate Portuguese
 dataset. Their review status and translation policy are documented alongside
 the source files.
 
+Traditional Chinese (Taiwan) exercise descriptions and instructions (in `catalogue/i18n/zh-TW.json`)
+that this fork adds are original translations of that English source produced with
+language-model assistance; the commit that adds each batch names the tools. They are not copied
+from a separate Chinese dataset. No machine translation goes in unreviewed: each batch has to
+pass `scripts/catalogue/zh-tw-batches.mjs` (one step for every English step) and
+`frontend/scripts/check-zh-tw-terms.mjs` (Taiwan wording), and a person reads it before it is
+merged.
+
 ## Gym check-in QR codes
 
 The gym check-in feature (a saved membership code shown as a QR code on the phone, added by

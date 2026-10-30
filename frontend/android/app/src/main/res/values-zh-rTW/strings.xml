@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <!-- Traditional Chinese (Taiwan) for the notification channels in values/strings.xml.
+         scripts/native-zh-tw.test.mjs checks that none is missing. -->
+    <string name="rest_countdown_channel_name">休息倒數</string>
+    <string name="rest_channel_name">組間休息計時器</string>
+    <string name="rest_quiet_channel_name">組間休息計時器（不震動）</string>
+    <string name="rest_channel_desc">組間休息會顯示在通知欄。只有允許在鎖定畫面顯示通知時，鎖定畫面才會出現。</string>
+</resources>

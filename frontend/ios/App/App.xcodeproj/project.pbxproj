@@ -36,6 +36,7 @@
 		AA0600000000000000000004 /* HealthReadCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0600000000000000000003 /* HealthReadCore.swift */; };
 		AA0800000000000000000002 /* GymReminderPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0800000000000000000001 /* GymReminderPlugin.swift */; };
 		AA0800000000000000000004 /* GymReminderRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0800000000000000000003 /* GymReminderRules.swift */; };
+		AA1000000000000000000002 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000001 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		AA0600000000000000000003 /* HealthReadCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HealthReadCore.swift; path = ../WatchCore/Sources/WatchCore/HealthReadCore.swift; sourceTree = "<group>"; };
 		AA0800000000000000000001 /* GymReminderPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymReminderPlugin.swift; sourceTree = "<group>"; };
 		AA0800000000000000000003 /* GymReminderRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GymReminderRules.swift; path = ../GymReminderCore/Sources/GymReminderCore/GymReminderRules.swift; sourceTree = "<group>"; };
+		AA1000000000000000000003 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 				504EC3131FED79650016851F /* Info.plist */,
 				2FAD9762203C412B000D30F8 /* config.xml */,
 				50B271D01FEDC1A000F3C39B /* public */,
+				AA1000000000000000000001 /* InfoPlist.strings */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 504EC2FB1FED79650016851F;
 			packageReferences = (
@@ -229,6 +233,7 @@
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
 				AA0200000000000000000008 /* PrivacyInfo.xcprivacy in Resources */,
+				AA1000000000000000000002 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +321,14 @@
 				504EC3111FED79650016851F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		AA1000000000000000000001 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA1000000000000000000003 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -1,0 +1,10 @@
+/* The permission prompts of Info.plist in Traditional Chinese (Taiwan). Keep the keys in step
+   with Info.plist; scripts/native-zh-tw.test.mjs checks that none is missing. */
+"NSLocalNetworkUsageDescription" = "當你連接自己的 openGym 伺服器或家用網路上的 AI 模型時，用來連到它們。";
+"NSCameraUsageDescription" = "用來掃描健身房會員的 QR Code，以及為你自己新增的動作拍照或錄影。";
+"NSMicrophoneUsageDescription" = "為你自己新增的動作錄影時，用來錄下聲音。";
+"NSHealthShareUsageDescription" = "用來在你訓練時於 Apple Watch 顯示心率；開啟後，也會把手錶儲存的心率和其他 App 的體重紀錄加進你的紀錄。";
+"NSHealthUpdateUsageDescription" = "開啟後，用來把完成的訓練和體重紀錄存到 Apple 健康。";
+"NSLocationWhenInUseUsageDescription" = "用來在你所在的位置把健身房標到地圖上，供健身房提醒使用。你的位置只留在這支 iPhone 上。";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "讓健身房提醒在你抵達加入的健身房時察覺到，即使 openGym 已關閉。iOS 只會留意這些地點，你的位置不會離開這支 iPhone。";
+"NSFaceIDUsageDescription" = "刪除帳號前，用來確認是你本人。";

@@ -22,6 +22,13 @@ final class HealthReadCoreTests: XCTestCase {
         XCTAssertFalse(HealthReadCore.isOwn(source: "com.garmin.connect.mobile", syncId: "abc"))
     }
 
+    func testThisBuildsOwnIdsAreRecognised() {
+        XCTAssertTrue(HealthReadCore.isOwn(source: "cloud.jlab-app.opengym", syncId: nil))
+        XCTAssertTrue(HealthReadCore.isOwn(source: "cloud.jlab-app.opengym.watchkitapp", syncId: nil))
+        XCTAssertFalse(HealthReadCore.isOwn(source: "cloud.jlab-app.opengymx", syncId: nil))
+        XCTAssertFalse(HealthReadCore.isOwn(source: "cloud.jlab-app.platebook", syncId: nil))
+    }
+
     func testWeighInsLeaveOutOpenGymsOwn() {
         let out = HealthReadCore.weights([
             .init(ms: 2_000, kg: 80, id: "b", source: "ch.duartesantos.opengym", syncId: "opengym-bw-2026-10-15"),

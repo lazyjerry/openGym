@@ -22,7 +22,9 @@ export const LB_PER_KG = 2.2046226218
 const KG_MIN = 20
 const KG_MAX = 400
 // Packages and bundle ids that are openGym: the app, its test build, the Apple Watch app.
-const OWN = /^ch\.duartesantos\.opengym(\.|$)/
+// This build is cloud.jlab-app.opengym on iOS and cloud.jlab_app.opengym on Android; records
+// written under the earlier id still count as its own.
+const OWN = /^(cloud\.jlab-app\.opengym|cloud\.jlab_app\.opengym|ch\.duartesantos\.opengym)(\.|$)/
 
 /** Whether a record in the hub is one openGym wrote itself (by its client id or by its origin). */
 export function isOwnRecord(rec) {

@@ -255,7 +255,7 @@ default, each independent of writing and of the other:
   clientId }] }`: 30 days back the first time (what Health Connect gives without the history
   permission), afterwards from the newest seen minus two days. `lib/health-read.js` `mergeWeighIns`
   takes the latest of each day, skips openGym's own records (`clientRecordId` `opengym-*`, origin
-  `ch.duartesantos.opengym*`), keeps a day that has a weigh-in typed into openGym, does not bring
+  `cloud.jlab-app.opengym*`, `cloud.jlab_app.opengym*` or the earlier `ch.duartesantos.opengym*`), keeps a day that has a weigh-in typed into openGym, does not bring
   back one deleted in openGym after it was measured, and converts to lb for an lb profile. Imported
   entries carry `src` and are never written back (`healthRecords` leaves them out), and in a sync
   merge a typed weigh-in beats an imported one of the same day whichever is newer
@@ -314,7 +314,7 @@ and **Delete**.
   `ios/App/AnimationPacksDownloader` (a `StoreDownloaderExtension`), added and embedded by
   `ios/ci/add-asset-downloader.rb` (run once and commit the project; CI runs it until then), the
   Info.plist keys `BAAppGroupID`, `BAHasManagedAssetPacks`, `BAUsesAppleHosting`, and the App
-  Group `group.ch.opengym.app` on the app and the extension. `scripts/ios/finish-ipa.sh` signs the
+  Group `group.cloud.jlab-app.opengym` on the app and the extension. `scripts/ios/finish-ipa.sh` signs the
   extension with its own profile (`EXT_PROFILE`).
 - **Android:** in the `play` flavour the same interface goes through Play Asset Delivery (status,
   download with progress, Wi-Fi only with Play's own prompt for mobile data, remove) for the packs
@@ -325,9 +325,9 @@ and **Delete**.
   built-in animations: 180 px in the Standard APK, 240 px in Plus, 360 px in HD. Each APK's updater
   stays with its own kind (`pickApk` in `lib/update.js`, told by `VITE_APK_VARIANT`).
 
-App Store Connect, once: the App Group `group.ch.opengym.app`; the bundle id
-`ch.opengym.app.AnimationPacksDownloader` (an app extension); the App Groups capability on
-`ch.opengym.app` and on the extension, both with that group; an App Store provisioning profile
+App Store Connect, once: the App Group `group.cloud.jlab-app.opengym`; the bundle id
+`cloud.jlab-app.opengym.AnimationPacksDownloader` (an app extension); the App Groups capability on
+`cloud.jlab-app.opengym` and on the extension, both with that group; an App Store provisioning profile
 for each; then the ten packs uploaded as Apple-hosted background assets for the app.
 
 Worth checking on a device: picking 720 px starts a download that shows its progress; the

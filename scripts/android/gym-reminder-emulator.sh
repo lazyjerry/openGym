@@ -20,7 +20,7 @@ set -uo pipefail
 APK=${1:?debug apk}
 ADB=${ADB:-/opt/android-sdk/platform-tools/adb}
 CDP=${CDP:-/root/homelab/scripts/android-repro/cdp.mjs}
-PKG=${PKG:-ch.duartesantos.opengym.test}
+PKG=${PKG:-cloud.jlab_app.opengym.test}
 PREFS=shared_prefs/opengym_gym_reminder.xml
 LAT=47.3769; LNG=8.5417          # the gym (Zurich)
 FAR_LAT=47.4200; FAR_LNG=8.5900  # 5 km away

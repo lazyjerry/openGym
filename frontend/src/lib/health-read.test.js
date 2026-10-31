@@ -22,6 +22,15 @@ describe('isOwnRecord', () => {
     expect(isOwnRecord({ origin: 'ch.duartesantos.opengymx' })).toBe(false)
     expect(isOwnRecord({ origin: 'com.garmin.android.apps.connectmobile', clientId: 'abc' })).toBe(false)
   })
+
+  it('knows this build by its own ids, the iPhone one and the Android one', () => {
+    expect(isOwnRecord({ origin: 'cloud.jlab-app.opengym' })).toBe(true)
+    expect(isOwnRecord({ origin: 'cloud.jlab-app.opengym.watchkitapp' })).toBe(true)
+    expect(isOwnRecord({ origin: 'cloud.jlab_app.opengym' })).toBe(true)
+    expect(isOwnRecord({ origin: 'cloud.jlab_app.opengym.test' })).toBe(true)
+    expect(isOwnRecord({ origin: 'cloud.jlab-app.opengymx' })).toBe(false)
+    expect(isOwnRecord({ origin: 'cloud.jlab-app.platebook' })).toBe(false)
+  })
 })
 
 describe('mergeHeartRate', () => {

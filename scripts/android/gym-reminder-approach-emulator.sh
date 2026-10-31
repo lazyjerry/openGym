@@ -22,7 +22,7 @@ set -uo pipefail
 APK=${1:?debug apk}
 ADB=${ADB:-/opt/android-sdk/platform-tools/adb}
 CDP=${CDP:-/root/homelab/scripts/android-repro/cdp.mjs}
-PKG=${PKG:-ch.duartesantos.opengym.test}
+PKG=${PKG:-cloud.jlab_app.opengym.test}
 PREFS=shared_prefs/opengym_gym_reminder.xml
 PORT=${PORT:-47731}
 EXEMPT=${EXEMPT:-battery}

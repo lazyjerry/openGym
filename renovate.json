@@ -62,7 +62,7 @@
       "groupName": "frontend-major"
     },
     {
-      "description": "Capacitor 8 needs Node >= 22 and frontend/android + frontend/ios are committed, so a major also means migrating the native projects — Gradle/AGP, the Podfile. That is a deliberate piece of work, not a dependency bump. Drop this rule when you want to do it.",
+      "description": "Capacitor 8 needs Node >= 22 and frontend/android + frontend/ios are committed, so a major also means migrating the native projects — Gradle/AGP, the Swift packages (CapApp-SPM). That is a deliberate piece of work, not a dependency bump. Drop this rule when you want to do it.",
       "matchPackageNames": [
         "@capacitor/**"
       ],

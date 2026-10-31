@@ -6,6 +6,16 @@
   "android": {
     "allowMixedContent": true
   },
+  "ios": {
+    "includePlugins": [
+      "@aparajita/capacitor-secure-storage",
+      "@capacitor/app",
+      "@capacitor/filesystem",
+      "@capacitor/local-notifications",
+      "@capacitor/share",
+      "@capacitor/splash-screen"
+    ]
+  },
   "plugins": {
     "SystemBars": {
       "insetsHandling": "disable"

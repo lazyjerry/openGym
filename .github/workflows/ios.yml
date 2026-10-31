@@ -81,7 +81,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
         working-directory: frontend
-      # The phone build, copied into ios/App/App/public; cap sync runs pod install.
+      # The phone build, copied into ios/App/App/public; cap sync writes the Swift packages (CapApp-SPM).
       - run: npm run build:mobile
         working-directory: frontend
       # The asset pack downloader extension, until the project with it is committed (does nothing then).
@@ -109,7 +109,7 @@ jobs:
         working-directory: frontend/ios/App
         run: |
           set -o pipefail
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug \
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug \
             -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd \
             CODE_SIGNING_ALLOWED=NO build | tee build/xcodebuild.log | grep -E "error:|warning: .*(App/|Swift)|BUILD" || true
           test -d build/dd/Build/Products/Debug-iphonesimulator/App.app
@@ -350,7 +350,7 @@ jobs:
           # on a loaded runner was most of this job's red runs (2026-10-13/14). A test that fails
           # three times in a row is a real failure; one that needed a retry is listed in the
           # summary below, so a flake stays visible instead of being silently absorbed.
-          xcodebuild test -workspace App.xcworkspace -scheme AppUITests -destination "id=$UDID" \
+          xcodebuild test -project App.xcodeproj -scheme AppUITests -destination "id=$UDID" \
             -retry-tests-on-failure -test-iterations 3 \
             -resultBundlePath build/ui.xcresult CODE_SIGNING_ALLOWED=NO \
             | tee build/ui-tests.log | grep -E "error:|Test Case|passed|failed|TEST" || exit 1
@@ -406,7 +406,7 @@ jobs:
         working-directory: frontend/ios/App
         run: |
           set -o pipefail
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release \
             -destination 'generic/platform=iOS' -archivePath build/App.xcarchive \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" archive \
             | tee build/archive.log | grep -E "error:|BUILD|ARCHIVE" || true

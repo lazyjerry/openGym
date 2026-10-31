@@ -106,5 +106,7 @@
 	<string>Lets the gym reminder notice when you arrive at a gym you added, even with openGym closed. iOS only watches those places, and your location never leaves this iPhone.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Used to make sure it’s really you before your account is deleted.</string>
+	<key>CAPACITOR_DEBUG</key>
+	<string>$(CAPACITOR_DEBUG)</string>
 </dict>
 </plist>

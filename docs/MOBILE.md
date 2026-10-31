@@ -422,7 +422,7 @@ quiet; a black-holed server: posts after the 3 s bound; no server: posts).
 
 - Node 22 (the Capacitor 8 CLI needs it)
 - **Android:** Android Studio (bundles the SDK, API 36). Java 21 for Gradle.
-- **iOS:** a Mac with Xcode 26 and CocoaPods (`brew install cocoapods`). A free Apple ID
+- **iOS:** a Mac with Xcode 26 (plugins come through Swift Package Manager). A free Apple ID
   is enough to run the app on your own iPhone (see below); paid membership is only needed
   for App Store and TestFlight distribution ([APP_STORES.md](APP_STORES.md)).
 

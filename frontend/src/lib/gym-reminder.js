@@ -5,7 +5,8 @@
 // platform's proximity alerts, no Google Play Services, android/.../GymReminderPlugin.java) and
 // posts the notification on its own, with the app closed. Nothing here ever reaches the server:
 // the places live only in the native side's own storage (kept out of device backups too), never
-// in the synced state `S`, never in a backup file; the page keeps just an on/off flag.
+// in the synced state `S`; the page keeps just an on/off flag. A backup file carries the places
+// beside the state (see "backups" below), since it is the only way to move them to a new phone.
 //
 // The no-nag rules are decided by the native side when a gym is entered, since the page is not
 // running then. The page hands it what it needs to know (skipReason below spells out the rule the
@@ -294,3 +295,37 @@ export function onGymReminderOpen(cb) {
 }
 
 export function _resetGymReminder() { pluginP = null; lastStatus = ''; lastServer = null; memory = null }
+
+/* ---------------- backups ---------------- */
+
+// The places do travel in a backup file: a copy the person makes and moves on purpose, the only
+// way to bring them to a new phone. They sit under their own key beside the state, never in it,
+// so the sync still never sees them; lib/backup-media.js takes them out again on the way in.
+// The switch is not in it: it needs this phone's location permission, so it stays this phone's.
+export const BACKUP_KEY = 'gymReminder'
+
+/** The state as a backup writes it: with the places and the window, when there are places. */
+export function withBackupGyms(S, config) {
+  const c = normConfig(config)
+  return c.gyms.length ? { ...S, [BACKUP_KEY]: { gyms: c.gyms, window: c.window } } : S
+}
+
+/** withBackupGyms with this phone's own places (none on the web build). */
+export async function backupWithGyms(S) {
+  return withBackupGyms(S, (await loadGymConfig()).config)
+}
+
+/** Takes the places out of a read backup (mutating it): { gyms, window }, or null for none. */
+export function takeBackupGyms(state) {
+  if (!state || typeof state !== 'object' || !(BACKUP_KEY in state)) return null
+  const c = normConfig(state[BACKUP_KEY])
+  delete state[BACKUP_KEY]
+  return c.gyms.length ? { gyms: c.gyms, window: c.window } : null
+}
+
+/** Hands a backup's places to the native side, the switch left as this phone has it. */
+export async function restoreBackupGyms(saved, S = null) {
+  if (!saved?.gyms?.length) return null
+  const { config } = await loadGymConfig()
+  return saveGymConfig({ on: config.on, gyms: saved.gyms, window: saved.window }, S)
+}

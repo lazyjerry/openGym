@@ -8,6 +8,7 @@ import { rememberDefaultLang } from '../lib/default-lang.js'
 import { guestAllowed } from '../lib/guest.js'
 import { stateJson } from '../lib/state-json.js'
 import { MOBILE, initReminderSync, nativeLoad, nativeSave, onAppActive, readJsonFile, syncReminder, writeAutoBackup, writeJsonFile } from '../lib/mobile.js'
+import { backupWithGyms } from '../lib/gym-reminder.js'
 import { initHealthSync, syncHealth, readHealth } from '../lib/health-sync.js'
 import { refillIfComplete } from '../lib/rotation.js'
 import { liftLegacy } from '../lib/sync-legacy.js'
@@ -1572,7 +1573,8 @@ export const useStore = create((set, get) => {
     // setting off; the private file mirror (nativePersist, above) already covers every change.
     autoBackupNow() {
       const S = get().S
-      if (MOBILE && S.autoBackup) writeAutoBackup(S)
+      // With the gym places beside the state, as every backup file has them (lib/gym-reminder.js).
+      if (MOBILE && S.autoBackup) backupWithGyms(S).then(writeAutoBackup, () => writeAutoBackup(S))
     },
 
     isGuest: () => localStorage.getItem('gym_guest') === '1',

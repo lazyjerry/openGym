@@ -58,7 +58,7 @@ import WatchSettingsPage from './WatchSettings.jsx'
 import { reportSheet } from '../components/ReportSheet.jsx'
 import { csvExportSheet } from '../components/CsvExportSheet.jsx'
 import GymReminderPage, { GymEditPage } from './GymReminder.jsx'
-import { readGymConfig } from '../lib/gym-reminder.js'
+import { readGymConfig, backupWithGyms, restoreBackupGyms } from '../lib/gym-reminder.js'
 import { THEMES, inSeason, seasonChoice, activeSeason } from '../lib/seasonal.js'
 
 /* Settings (v1.3.11). The root is one screen: an account card, eleven rows that each open a page
@@ -290,7 +290,8 @@ export default function Settings({ page = null, find = null, via = null, entryKe
   // Reads the store at the moment of the tap: the sheet that asks before a sign-out offers it too,
   // and the copy it exports is the one that has not reached the server.
   const doExport = async () => {
-    const json = JSON.stringify(useStore.getState().S, null, 2)
+    // The gym places go along beside the state (lib/gym-reminder.js backups).
+    const json = JSON.stringify(await backupWithGyms(useStore.getState().S), null, 2)
     const name = 'opengym-backup-' + todayISO() + '.json'
     // WKWebView can't download blob URLs — the native build hands the file to the share sheet.
     if (MOBILE) {
@@ -309,7 +310,7 @@ export default function Settings({ page = null, find = null, via = null, entryKe
     const st = useStore.getState()
     const signedIn = !!(st.user && st.config?.media)
     let out
-    try { out = await exportBackupZip(st.S, { fetchOne: signedIn ? fetchToStore : null }) }
+    try { out = await exportBackupZip(await backupWithGyms(st.S), { fetchOne: signedIn ? fetchToStore : null }) }
     catch { toast(t('Something went wrong')); return }
     const name = 'opengym-backup-' + todayISO() + '.zip'
     if (out.missing) toast(tn('{0} file could not be included', '{0} files could not be included', out.missing))
@@ -341,6 +342,7 @@ export default function Settings({ page = null, find = null, via = null, entryKe
         await storeBackupMedia(read.files, { limits: limitsFrom(useStore.getState().config) })
       }
       importBackup(read.state, { mergeWith })
+      await restoreBackupGyms(read.gymReminder, useStore.getState().S)
       // The photos it brought are pending here and maybe gone from the server (a reset): sent now,
       // not after the ten-minute dedupe of the run before the reset.
       if (read.files.length) syncMedia({ force: true })

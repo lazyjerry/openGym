@@ -129,6 +129,19 @@ describe('import', () => {
     expect('media' in S.workouts[1]).toBe(false)
     expect(S.workouts[2]).toEqual({ id: 'w3' })
   })
+
+  it('健身房地點在 JSON 與 zip 備份裡都另外交回，不留在會同步的 state', async () => {
+    const gyms = { gyms: [{ id: 'g1', name: 'Downtown', lat: 47.3769, lng: 8.5417, radius: 100, text: '' }], window: null }
+    const S = { ...stateWith([]), gymReminder: gyms }
+    const json = await readBackupFile(new File([JSON.stringify(S)], 'b.json', { type: 'application/json' }))
+    expect(json.gymReminder).toEqual(gyms)
+    expect('gymReminder' in json.state).toBe(false)
+    const { blob } = await exportBackupZip(S, { media: createMediaStore(memoryBackend()) })
+    const zip = await readBackupFile(new File([blob], 'b.zip'))
+    expect(zip.gymReminder).toEqual(gyms)
+    expect('gymReminder' in zip.state).toBe(false)
+    expect((await readBackupFile(new File([JSON.stringify(stateWith([]))], 'old.json'))).gymReminder).toBe(null)
+  })
 })
 
 describe('a workout\'s photos and videos in the zip', () => {

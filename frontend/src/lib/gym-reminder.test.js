@@ -37,6 +37,7 @@ import {
   clampRadius, normGym, normConfig, normWindow, inWindow, skipReason, statusOf, copyFor, distanceM,
   readGymConfig, saveGymConfig, loadGymConfig, pushGymStatus, onGymReminderOpen, _resetGymReminder,
   GYM_KEY, RADIUS, MAX_GYMS, NOTIFICATION_ID,
+  withBackupGyms, backupWithGyms, takeBackupGyms, restoreBackupGyms,
 } from './gym-reminder.js'
 
 const at = (iso, hhmm) => new Date(`${iso}T${hhmm}:00`)
@@ -208,6 +209,52 @@ describe('kept on the device, never in the synced state', () => {
     expect(await pushGymStatus({ workouts: [] })).toBe(false)
     expect(await pushGymStatus({ workouts: [{ d: '2026-10-15' }] })).toBe(true)
     expect(mocks.calls.filter(c => c[0] === 'status')).toHaveLength(2)
+  })
+})
+
+describe('in a backup file, beside the state', () => {
+  const S = { unit: 'kg', workouts: [] }
+  const home = gym({ id: 'g2', name: 'Home gym', lat: 25.033, lng: 121.5654, radius: 150, text: 'Leg day' })
+  const win = { from: '06:00', to: '22:00' }
+
+  it('備份帶上地點與時段，不帶開關，也不改到原本的資料；沒有地點就不加欄位', async () => {
+    mocks.get = { config: on({ gyms: [gym(), home], window: win }) }
+    const out = await backupWithGyms(S)
+    expect(out).toEqual({ unit: 'kg', workouts: [], gymReminder: { gyms: [gym(), home], window: win } })
+    expect(S).toEqual({ unit: 'kg', workouts: [] })
+    expect(withBackupGyms(S, on({ gyms: [] }))).toBe(S)
+  })
+
+  it('網頁版沒有原生端，備份不帶地點', async () => {
+    mocks.MOBILE = false
+    expect(await backupWithGyms(S)).toEqual(S)
+  })
+
+  it('讀備份時把地點從資料裡拿出來，不留在會同步的 state；壞掉的地點丟掉', () => {
+    const state = { unit: 'kg', workouts: [], gymReminder: { on: true, gyms: [gym(), { id: 'bad', lat: 999, lng: 0 }], window: win } }
+    expect(takeBackupGyms(state)).toEqual({ gyms: [gym()], window: win })
+    expect(state).toEqual({ unit: 'kg', workouts: [] })
+    expect(takeBackupGyms({ unit: 'kg' })).toBe(null)
+    const empty = { gymReminder: { gyms: [] } }
+    expect(takeBackupGyms(empty)).toBe(null)
+    expect(empty).toEqual({})
+  })
+
+  it('還原時地點與時段交給原生端，開關維持這台手機原本的狀態', async () => {
+    mocks.get = { config: { on: false, gyms: [], window: null } }
+    await restoreBackupGyms({ gyms: [home], window: win })
+    expect(mocks.calls.filter(c => c[0] === 'configure')).toEqual([['configure', { config: { on: false, gyms: [home], window: win } }]])
+    mocks.calls = []
+    _resetGymReminder()
+    mocks.get = { config: on() }
+    await restoreBackupGyms({ gyms: [home], window: null })
+    expect(mocks.calls.filter(c => c[0] === 'configure')).toEqual([['configure', { config: { on: true, gyms: [home], window: null } }]])
+  })
+
+  it('備份沒有地點時，這台手機的地點不動', async () => {
+    mocks.get = { config: on() }
+    expect(await restoreBackupGyms(null)).toBe(null)
+    expect(mocks.calls).toEqual([])
   })
 })
 

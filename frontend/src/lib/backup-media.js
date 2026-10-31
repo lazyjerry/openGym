@@ -24,6 +24,7 @@ import { sha256Hex } from './sha256.js'
 import { mediaStore } from './media-store.js'
 import { DEFAULT_LIMITS, MB } from './media-limits.js'
 import { t } from './i18n-core.js'
+import { takeBackupGyms } from './gym-reminder.js'
 
 export const BACKUP_JSON = 'opengym-backup.json'
 const MEDIA_ENTRY = /^media\/([0-9a-f]{64})\.(jpg|png|webp|gif|mp4|mov|webm)$/
@@ -100,6 +101,8 @@ export function backupImportError(e) {
  * { state, files: [{ hash, entry }], zip }. `files` are the zip's media entries the state refers
  * to, not yet checked or stored — storeBackupMedia does that, once the import is confirmed.
  * Throws on anything that is not an openGym backup.
+ * Also `gymReminder`: the gym places the file carries beside the state, taken out of it so they
+ * never reach the synced state (lib/gym-reminder.js takeBackupGyms), or null.
  */
 export async function readBackupFile(file) {
   let state, files = []
@@ -122,7 +125,8 @@ export async function readBackupFile(file) {
     state = JSON.parse(await file.text())
     if (!isBackup(state)) throw notBackup()
   }
-  return { state: sanitizeCustomMedia(state), files, zip }
+  const gymReminder = takeBackupGyms(state)
+  return { state: sanitizeCustomMedia(state), files, zip, gymReminder }
 }
 
 /**
